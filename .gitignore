@@ -1,0 +1,31 @@
+# Virtual environment
+.venv/
+
+# Environment variables
+.env
+.env.*
+
+# But keep the example environment file
+!.env.example
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Distribution / build
+dist/
+build/
+*.egg-info/
+
+# Test / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
