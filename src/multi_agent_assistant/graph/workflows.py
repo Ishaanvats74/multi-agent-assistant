@@ -43,6 +43,7 @@ def planning_node(state: AgentState):
     }
 
 
+
 def finance_node(state: AgentState):
 
     result = finance_agent.invoke({
@@ -84,16 +85,16 @@ def verification_node(state: AgentState):
         state["agent_response"]
     )
 
+    retry_count = state.get("retry_count", 0)
+
+    if not result.approved:
+        retry_count += 1
+
     print("\n========== VERIFICATION ==========")
     print("Approved:", result.approved)
     print("Issues:", result.issues)
     print("Reason:", result.reason)
     print("==================================\n")
-
-    retry_count = state.get("retry_count", 0)
-
-    if not result.approved:
-        retry_count += 1
 
     return {
         "verified": result.approved,

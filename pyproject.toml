@@ -1,5 +1,5 @@
 [project]
-name = "multi-agent-assistant"
+name = "multi_agent_assistant"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -8,15 +8,19 @@ authors = [
 ]
 requires-python = ">=3.14"
 dependencies = [
+    "ddgs>=9.16.0",
+    "duckduckgo-search>=8.1.1",
     "fastapi[standard]>=0.142.2",
     "langchain>=1.4.3",
+    "langchain-community>=0.4.2",
+    "langchain-diffbot>=0.2.0",
     "langchain-groq>=1.1.3",
     "langgraph>=1.2.12",
     "laya>=0.3.24",
 ]
 
 [project.scripts]
-multi-agent-assistant = "multi-agent-assistant:main"
+multi_agent_assistant = "multi_agent_assistant:main"
 
 [build-system]
 requires = ["uv_build>=0.12.21,<0.13.0"]

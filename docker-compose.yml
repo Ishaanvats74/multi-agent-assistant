@@ -1,0 +1,9 @@
+services:
+  multi_agent_assistant:
+    build: .
+    container_name: multi_agent_assistant
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    restart: unless-stopped
