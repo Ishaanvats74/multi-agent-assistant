@@ -12,6 +12,9 @@ class Query(BaseModel):
 def read_root():
     return {"Hello": "World"}
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 @app.post("/chat")
 def query(query:Query):
@@ -28,7 +31,7 @@ def query(query:Query):
         "verification_issues": [],
         "verification_reason": ""
     })
-    
+
     return {
     "response": result["agent_response"],
     "agent": result["route"],
