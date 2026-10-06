@@ -6,7 +6,17 @@ from langchain_diffbot import DiffbotWebSearchRetriever
 
 load_dotenv()
 
-db = Diffbot(token=os.environ["DIFFBOT_API_TOKEN"])
+def get_diffbot():
+    token = os.getenv("DIFFBOT_API_TOKEN")
+
+    if not token:
+        raise RuntimeError(
+            "DIFFBOT_API_TOKEN is required to use web search."
+        )
+
+    return Diffbot(token=token)
+
+db = get_diffbot()
 
 retriever = DiffbotWebSearchRetriever(
     client=db,
