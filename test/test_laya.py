@@ -22,11 +22,11 @@ from multi_agent_assistant.router.route import laya_router
         ),
         (
             "Help me create a monthly budget",
-            "finance",
+            "financial",
         ),
         (
             "How much should I save every month?",
-            "finance",
+            "financial",
         ),
     ],
 )
@@ -34,4 +34,4 @@ from multi_agent_assistant.router.route import laya_router
 def test_intent_classification(message, expected):
     result = laya_router(message)
 
-    assert result == expected
+    assert result['intent'] == expected

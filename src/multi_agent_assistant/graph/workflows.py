@@ -27,11 +27,37 @@ def technical_node(state: AgentState):
 
 def planning_node(state: AgentState):
 
+    prompt = state["user_message"]
+
+    # If this is a retry, provide the previous response
+    # and verification feedback to the planning agent.
+    if state.get("verification_issues"):
+        prompt = f"""
+Original user request:
+{state["user_message"]}
+
+Previous response:
+{state["agent_response"]}
+
+The verification agent rejected the previous response
+for the following reasons:
+
+{state["verification_issues"]}
+
+Verification explanation:
+{state.get("verification_reason", "")}
+
+Revise the previous response and fix all of the issues identified
+by the verification agent.
+
+Return only the improved response.
+"""
+
     result = planning_agent.invoke({
         "messages": [
             {
                 "role": "user",
-                "content": state["user_message"]
+                "content": prompt
             }
         ]
     })
@@ -41,7 +67,6 @@ def planning_node(state: AgentState):
     return {
         "agent_response": response
     }
-
 
 
 def finance_node(state: AgentState):
@@ -72,8 +97,8 @@ def route_agent(state: AgentState):
     if route == "planning":
         return "planning"
 
-    if route == "finance":
-        return "finance"
+    if route == "financial":
+        return "financial"
 
     raise ValueError(f"Unknown route: {route}")
 
@@ -120,7 +145,7 @@ graph = StateGraph(AgentState)
 # Agents
 graph.add_node("technical", technical_node)
 graph.add_node("planning", planning_node)
-graph.add_node("finance", finance_node)
+graph.add_node("financial", finance_node)
 
 # Verification
 graph.add_node("verification", verification_node)
@@ -136,7 +161,7 @@ graph.add_conditional_edges(
     {
         "technical": "technical",
         "planning": "planning",
-        "finance": "finance"
+        "financial": "financial"
     }
 )
 
@@ -147,7 +172,7 @@ graph.add_conditional_edges(
 
 graph.add_edge("technical", "verification")
 graph.add_edge("planning", "verification")
-graph.add_edge("finance", "verification")
+graph.add_edge("financial", "verification")
 
 
 # -------------------------
@@ -164,7 +189,7 @@ graph.add_conditional_edges(
         # Retry the SAME specialist
         "technical": "technical",
         "planning": "planning",
-        "finance": "finance",
+        "financial": "financial",
     }
 )
 

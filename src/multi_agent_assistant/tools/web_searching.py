@@ -18,11 +18,7 @@ def get_diffbot():
 
 
 
-retriever = DiffbotWebSearchRetriever(
-    client=db,
-    k=5,
-    fields=["title", "pageUrl", "score"],
-)
+
 
 
 @tool
@@ -31,7 +27,11 @@ def web_search(query: str) -> str:
     print("\n🔎 WEB SEARCH CALLED")
     print("Query:", query)
     db = get_diffbot()
-
+    retriever = DiffbotWebSearchRetriever(
+    client=db,
+    k=5,
+    fields=["title", "pageUrl", "score"],
+)
     docs = retriever.invoke(query)
 
     results = []

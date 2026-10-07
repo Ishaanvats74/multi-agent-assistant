@@ -28,7 +28,7 @@ def make_state(**overrides):
     [
         "technical",
         "planning",
-        "finance",
+        "financial",
     ],
 )
 def test_route_agent(route):

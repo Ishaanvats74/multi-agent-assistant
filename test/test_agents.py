@@ -31,7 +31,7 @@ def test_planning_node(monkeypatch):
     }
 
     monkeypatch.setattr(
-        "multi_agent_assistant.graph.workflow.planning_agent",
+        "multi_agent_assistant.graph.workflows.planning_agent",
         fake_agent,
     )
 
@@ -59,7 +59,7 @@ def test_finance_node(monkeypatch):
     }
 
     monkeypatch.setattr(
-        "multi_agent_assistant.graph.workflow.finance_agent",
+        "multi_agent_assistant.graph.workflows.finance_agent",
         fake_agent,
     )
 
@@ -87,7 +87,7 @@ def test_technical_node(monkeypatch):
     }
 
     monkeypatch.setattr(
-        "multi_agent_assistant.graph.workflow.technical_agent",
+        "multi_agent_assistant.graph.workflows.technical_agent",
         fake_agent,
     )
 
@@ -115,23 +115,21 @@ def test_planning_retry_contains_verification_feedback(monkeypatch):
     }
 
     monkeypatch.setattr(
-        "multi_agent_assistant.graph.workflow.planning_agent",
+        "multi_agent_assistant.graph.workflows.planning_agent",
         fake_agent,
     )
 
     state = {
-        "user_message": "Create a DSA plan",
-        "route": "planning",
-        "agent_response": "Bad previous response",
-        "verified": False,
-        "verification_issues": [
-            "The plan exceeds 30 minutes per day."
-        ],
-        "verification_reason": (
-            "The previous answer violated the time constraint."
-        ),
-        "retry_count": 1,
-    }
+    "user_message": "Create a DSA plan",
+    "route": "planning",
+    "agent_response": "Bad previous response",
+    "verified": False,
+    "verification_issues": [
+        "The plan exceeds 30 minutes per day."
+    ],
+    "verification_reason": "The previous response violated the time constraint.",
+    "retry_count": 1,
+}
 
     result = planning_node(state)
 
