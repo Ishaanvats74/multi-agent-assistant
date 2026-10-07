@@ -1,5 +1,5 @@
 from langchain_core.messages import SystemMessage, HumanMessage
-from ..models.groq_model import llm_with_tools, llm
+from ..models.groq_model import  llm
 from ..tools.web_searching import web_search
 from langchain.agents import create_agent
 
@@ -60,17 +60,6 @@ PLANNING_PROMPT = """
 
     You are a specialist worker, not the overall supervisor. Do not decide which other agent should handle the request.
 """
-
-# def planning_agent(user_message: str) -> str:
-
-#     messages = [
-#         SystemMessage(content=PLANNING_PROMPT),
-#         HumanMessage(content=user_message)
-#     ]
-
-#     response = llm_with_tools.invoke(messages)
-
-#     return response.content
 
 planning_agent = create_agent(
     model=llm,
