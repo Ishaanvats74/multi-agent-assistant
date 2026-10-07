@@ -49,12 +49,7 @@ jobs:
           uv run python -c "import multi_agent_assistant.graph"
           uv run python -c "import multi_agent_assistant.models"
           uv run python -c "import multi_agent_assistant.tools"
-
-      - name: Run tests
-        env:
-          PYTHONPATH: src
-        
-
+    
       - name: Run tests
         env:
           PYTHONPATH: src
