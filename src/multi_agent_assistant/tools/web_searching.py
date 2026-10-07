@@ -16,7 +16,7 @@ def get_diffbot():
 
     return Diffbot(token=token)
 
-db = get_diffbot()
+
 
 retriever = DiffbotWebSearchRetriever(
     client=db,
@@ -30,6 +30,7 @@ def web_search(query: str) -> str:
     """Search the web for current information and return relevant results."""
     print("\n🔎 WEB SEARCH CALLED")
     print("Query:", query)
+    db = get_diffbot()
 
     docs = retriever.invoke(query)
 
