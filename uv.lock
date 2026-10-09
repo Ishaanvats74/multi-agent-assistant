@@ -1323,12 +1323,14 @@ dependencies = [
     { name = "ddgs" },
     { name = "duckduckgo-search" },
     { name = "fastapi", extra = ["standard"] },
+    { name = "httpx" },
     { name = "langchain" },
     { name = "langchain-community" },
     { name = "langchain-diffbot" },
     { name = "langchain-groq" },
     { name = "langgraph" },
     { name = "laya" },
+    { name = "pytest" },
 ]
 
 [package.dev-dependencies]
@@ -1343,12 +1345,14 @@ requires-dist = [
     { name = "ddgs", specifier = ">=9.16.0" },
     { name = "duckduckgo-search", specifier = ">=8.1.1" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.142.2" },
+    { name = "httpx", specifier = ">=0.28.1" },
     { name = "langchain", specifier = ">=1.4.3" },
     { name = "langchain-community", specifier = ">=0.4.2" },
     { name = "langchain-diffbot", specifier = ">=0.2.0" },
     { name = "langchain-groq", specifier = ">=1.1.3" },
     { name = "langgraph", specifier = ">=1.2.12" },
     { name = "laya", specifier = ">=0.3.24" },
+    { name = "pytest", specifier = ">=9.1.1" },
 ]
 
 [package.metadata.requires-dev]

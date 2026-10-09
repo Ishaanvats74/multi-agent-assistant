@@ -1,9 +1,5 @@
 from unittest.mock import MagicMock
-from multi_agent_assistant.graph.workflows import (
-    technical_node,
-    planning_node,
-    finance_node,
-)
+from multi_agent_assistant.graph.workflows import technical_node,planning_node,finance_node
 
 
 def make_state():
@@ -58,18 +54,13 @@ def test_finance_node(monkeypatch):
         ]
     }
 
-    monkeypatch.setattr(
-        "multi_agent_assistant.graph.workflows.finance_agent",
-        fake_agent,
-    )
+    monkeypatch.setattr("multi_agent_assistant.graph.workflows.finance_agent",fake_agent)
 
     state = make_state()
 
     result = finance_node(state)
 
-    assert result["agent_response"] == (
-        "This is a finance response."
-    )
+    assert result["agent_response"] == "This is a finance response."
 
     fake_agent.invoke.assert_called_once()
 
@@ -86,18 +77,13 @@ def test_technical_node(monkeypatch):
         ]
     }
 
-    monkeypatch.setattr(
-        "multi_agent_assistant.graph.workflows.technical_agent",
-        fake_agent,
-    )
+    monkeypatch.setattr("multi_agent_assistant.graph.workflows.technical_agent",fake_agent)
 
     state = make_state()
 
     result = technical_node(state)
 
-    assert result["agent_response"] == (
-        "This is a technical response."
-    )
+    assert result["agent_response"] == "This is a technical response."
 
     fake_agent.invoke.assert_called_once()
 
@@ -114,10 +100,7 @@ def test_planning_retry_contains_verification_feedback(monkeypatch):
         ]
     }
 
-    monkeypatch.setattr(
-        "multi_agent_assistant.graph.workflows.planning_agent",
-        fake_agent,
-    )
+    monkeypatch.setattr("multi_agent_assistant.graph.workflows.planning_agent",fake_agent)
 
     state = {
     "user_message": "Create a DSA plan",
@@ -133,9 +116,7 @@ def test_planning_retry_contains_verification_feedback(monkeypatch):
 
     result = planning_node(state)
 
-    assert result["agent_response"] == (
-        "Improved planning response."
-    )
+    assert result["agent_response"] == "Improved planning response."
 
     call_args = fake_agent.invoke.call_args
 

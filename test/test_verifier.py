@@ -1,14 +1,8 @@
-from multi_agent_assistant.agents.verifier_agent import (
-    VerificationResult,
-)
+from multi_agent_assistant.agents.verifier_agent import VerificationResult
 
 
 def test_verification_result_approved():
-    result = VerificationResult(
-        approved=True,
-        issues=[],
-        reason="The response completely satisfies the request.",
-    )
+    result = VerificationResult(approved=True,issues=[],reason="The response completely satisfies the request.")
 
     assert result.approved is True
     assert result.issues == []
@@ -18,9 +12,7 @@ def test_verification_result_approved():
 def test_verification_result_rejected():
     result = VerificationResult(
         approved=False,
-        issues=[
-            "The response does not satisfy the requested constraint."
-        ],
+        issues=["The response does not satisfy the requested constraint."],
         reason="The answer is incomplete.",
     )
 
@@ -32,10 +24,7 @@ def test_verification_result_rejected():
 def test_verification_result_multiple_issues():
     result = VerificationResult(
         approved=False,
-        issues=[
-            "Missing required information.",
-            "Incorrect constraint.",
-        ],
+        issues=["Missing required information.","Incorrect constraint."],
         reason="Multiple problems were found.",
     )
 

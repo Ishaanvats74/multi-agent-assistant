@@ -1,13 +1,13 @@
-from typing import TypedDict, List
+from typing import TypedDict
 
 
 class AgentState(TypedDict):
-    user_message: str
+    query_input: str
     route: str
     agent_response: str
 
     verified: bool
-    verification_issues: List[str]
+    verification_issues: list[str]
     verification_reason: str
 
     retry_count: int
