@@ -32,7 +32,7 @@ from multi_agent_assistant.router.route import laya_router
 )
 
 def test_intent_classification(message, expected):
-    result = laya_router({"user_message":message})
+    result = laya_router({"query_input":message})
 
     assert isinstance(result, dict)
     assert result['intent'] == expected

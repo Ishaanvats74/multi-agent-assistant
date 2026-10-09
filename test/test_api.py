@@ -35,16 +35,11 @@ def test_chat_success(mock_router, mock_workflow):
         "verification_issues": [],
     }
 
-    response = client.post(
-        "/chat",
-        json={"user_message": "Explain binary search."},
-    )
+    response = client.post("/chat",json={"query_input": "Explain binary search."})
 
     assert response.status_code == 200
     assert response.json()["intent"] == "technical"
-    assert response.json()["response"] == (
-        "Binary search takes O(log n) time."
-    )
+    assert response.json()["response"] == ("Binary search takes O(log n) time.")
     mock_workflow.assert_called_once()
 
 
@@ -57,7 +52,7 @@ def test_chat_missing_message():
 def test_chat_empty_message():
     response = client.post(
         "/chat",
-        json={"user_message": "   "},
+        json={"query_input": "   "},
     )
 
     assert response.status_code == 422
@@ -69,7 +64,7 @@ def test_chat_rejects_routing_failure(mock_router):
 
     response = client.post(
         "/chat",
-        json={"user_message": "Explain binary search."},
+        json={"query_input": "Explain binary search."},
     )
 
     assert response.status_code == 503
@@ -82,10 +77,7 @@ def test_chat_handles_workflow_failure(mock_router, mock_workflow):
     mock_router.return_value = {"intent": "technical"}
     mock_workflow.side_effect = TimeoutError("internal timeout details")
 
-    response = client.post(
-        "/chat",
-        json={"user_message": "Explain binary search."},
-    )
+    response = client.post("/chat",json={"query_input": "Explain binary search."})
 
     assert response.status_code == 500
     assert "internal timeout details" not in response.text

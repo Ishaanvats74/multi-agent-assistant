@@ -6,7 +6,7 @@ from multi_agent_assistant.graph.workflows import route_agent,verification_route
 
 def make_state(**overrides):
     state: AgentState = {
-        "user_message": "Test message",
+        "query_input": "Test message",
         "route": "planning",
         "agent_response": "Test response",
         "verified": False,

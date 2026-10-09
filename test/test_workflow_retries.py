@@ -7,7 +7,7 @@ from multi_agent_assistant.graph.workflows import workflow
 
 def initial_state():
     return {
-        "user_message": "Explain binary search.",
+        "query_input": "Explain binary search.",
         "route": "technical",
         "agent_response": "",
         "verified": False,

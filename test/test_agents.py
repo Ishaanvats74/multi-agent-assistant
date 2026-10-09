@@ -4,7 +4,7 @@ from multi_agent_assistant.graph.workflows import technical_node,planning_node,f
 
 def make_state():
     return {
-        "user_message": "Create a test response",
+        "query_input": "Create a test response",
         "route": "planning",
         "agent_response": "",
         "verified": False,
@@ -103,7 +103,7 @@ def test_planning_retry_contains_verification_feedback(monkeypatch):
     monkeypatch.setattr("multi_agent_assistant.graph.workflows.planning_agent",fake_agent)
 
     state = {
-    "user_message": "Create a DSA plan",
+    "query_input": "Create a DSA plan",
     "route": "planning",
     "agent_response": "Bad previous response",
     "verified": False,

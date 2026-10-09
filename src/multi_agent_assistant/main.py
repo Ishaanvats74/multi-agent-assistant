@@ -1,8 +1,8 @@
 import logging
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel, Field, field_validator
-
+from .observability.metrics import RequestMetrics,ModelMetricsCallback
 from .router.route import laya_router
 from .graph.workflows import workflow
 
@@ -26,6 +26,25 @@ class Query(BaseModel):
         return value
 
 
+@app.middleware("http")
+async def collect_request_metrics(request: Request, call_next):
+    metrics = RequestMetrics()
+    request.state.metrics = metrics
+
+    try:
+        response = await call_next(request)
+        return response
+    finally:
+        logger.info(
+            "http_request_metrics",
+            extra={
+                "method": request.method,
+                "path": request.url.path,
+                "metrics": metrics.to_dict(),
+            },
+        )
+
+
 @app.get("/")
 def read_root():
     return {"status": "ok"}
@@ -37,10 +56,16 @@ def health():
 
 
 @app.post("/chat")
-def query(request: Query):
+def query(query: Query, request: Request):
 
     try:
-        route = laya_router({"query_input": request.query_input})
+        metrics: RequestMetrics = request.state.metrics
+        metrics.laya_calls += 1
+        started = metrics.start_stage()
+
+        route = laya_router({"query_input": query.query_input})
+
+        metrics.end_stage("laya_routing", started)
 
     except Exception:
         logger.exception("Laya routing failed")
@@ -53,8 +78,9 @@ def query(request: Query):
         raise HTTPException(status_code=503,detail="Unable to determine the request intent.")
 
     try:
+        started = metrics.start_stage()
         result = workflow.invoke({
-                "query_input": request.query_input,
+                "query_input": query.query_input,
                 "route": route["intent"],
                 "agent_response": "",
                 "verified": False,
@@ -62,8 +88,9 @@ def query(request: Query):
                 "verification_issues": [],
                 "verification_reason": ""
             },
-            config={"recursion_limit": 10}
+            config={"recursion_limit": 10, "callbacks": [ModelMetricsCallback(metrics)]}
         )
+        metrics.end_stage("workflow", started)
 
     except Exception:
         logger.exception("Workflow execution failed")
@@ -81,8 +108,13 @@ def query(request: Query):
 
         raise HTTPException(status_code=500,detail="Unable to generate a valid response.")
 
+    metrics.retries = result.get("retry_count", 0)
+    metrics.verification_failures = metrics.retries if not result.get("verified", False) else 0
+
     return {
         "response": result["agent_response"],
-        "agent": result.get("route", route["intent"]),
-        "intent": route["intent"]
+        "agent": result["route"],
+        "intent": route["intent"],
+        "verified": result.get("verified", False),
+        "retry_count": metrics.retries,
     }

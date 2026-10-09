@@ -51,7 +51,7 @@ verifier_prompt = ChatPromptTemplate.from_messages([
         "human",
         """
             USER REQUEST:
-            {user_message}
+            {query_input}
 
             GENERATED RESPONSE:
             {agent_response}
@@ -62,17 +62,17 @@ verifier_prompt = ChatPromptTemplate.from_messages([
 verifier = verifier_prompt | llm.with_structured_output(VerificationResult)
 
 
-def verify_response(user_message: str,agent_response: str) -> VerificationResult:
+def verify_response(query_input: str,agent_response: str) -> VerificationResult:
 
-    if not isinstance(user_message, str) or not user_message.strip():
-        raise ValueError("user_message must be a non-empty string.")
+    if not isinstance(query_input, str) or not query_input.strip():
+        raise ValueError("query_input must be a non-empty string.")
 
     if not isinstance(agent_response, str) or not agent_response.strip():
         return VerificationResult(approved=False,issues=["The generated response is empty."],reason="The agent did not generate a usable response.")
 
     try:
         result = verifier.invoke({
-            "user_message": user_message.strip(),
+            "query_input": query_input.strip(),
             "agent_response": agent_response.strip()
         })
 
