@@ -8,8 +8,8 @@ from langchain_diffbot import DiffbotWebSearchRetriever
 
 logger = logging.getLogger(__name__)
 
-MAX_RESULTS = 5
-MAX_CONTENT_LENGTH = 1500
+MAX_RESULTS = 3
+MAX_CONTENT_LENGTH = 600
 
 
 def get_diffbot():

@@ -19,7 +19,7 @@ def get_groq() -> ChatGroq:
         return ChatGroq(
             model="openai/gpt-oss-120b",
             temperature=0.5,
-            max_tokens=None,
+            max_tokens=1024,
             reasoning_format="parsed",
             timeout=30,
             max_retries=2,
